@@ -25,7 +25,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	runtimeOnly 'com.h2database:h2'
+    implementation 'junit:junit:4.13.1'
+    runtimeOnly 'com.h2database:h2'
+	implementation 'org.modelmapper:modelmapper:2.4.4'
+	implementation 'com.google.code.gson:gson:2.8.8'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.5.10'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
