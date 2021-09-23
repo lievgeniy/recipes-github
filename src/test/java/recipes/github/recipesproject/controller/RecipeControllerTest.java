@@ -130,7 +130,7 @@ public class RecipeControllerTest {
     @Order(3)
     public void testGetRecipeBadRequest() throws Exception {
         mockMvc.perform(get(BASE_URL + ID, "test"))
-                .andExpect(status().isOk());
+                .andExpect(status().isBadRequest());
     }
 
     @WithMockUser
