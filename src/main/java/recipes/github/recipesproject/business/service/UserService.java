@@ -2,6 +2,7 @@ package recipes.github.recipesproject.business.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import recipes.github.recipesproject.business.model.User;
 import recipes.github.recipesproject.business.service.Interface.IUserService;
@@ -19,6 +20,9 @@ public class UserService implements IUserService {
         this.userRepository = userRepository;
     }
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public User getUser(long id) {
         return this.userRepository.findById(id)
@@ -30,7 +34,7 @@ public class UserService implements IUserService {
         if (this.userRepository.findUserByEmail(user.getEmail()).isPresent()) {
             throw new BadParametersException("User already exists");
         }
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
         user.setRoles("ROLE_USER");
         this.userRepository.save(user);
@@ -43,12 +47,13 @@ public class UserService implements IUserService {
         this.userRepository.deleteById(id);
     }
 
+    //need to check if new password or old password in order to know if the password needs reencryption
     @Override
     public void updateUser(long id, User newUser) {
         User oldUser = this.userRepository.findById(id)
                 .orElseThrow(() -> new ItemNotFoundException("User not found with id: " + id));
         oldUser.setEmail(newUser.getEmail());
-        oldUser.setPassword(newUser.getPassword());
+        oldUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         this.userRepository.save(oldUser);
     }
 }

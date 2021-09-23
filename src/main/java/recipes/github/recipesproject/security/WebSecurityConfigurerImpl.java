@@ -21,20 +21,6 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(getEncoder());
-        /*
-        // storing users in memory
-        auth.inMemoryAuthentication()
-                .withUser("user1")
-                .password(getEncoder().encode("pass1"))  // encoding a password
-                .roles()
-                .and()  // separating sections
-                .withUser("user2")
-                .password(getEncoder().encode("pass2"))
-                .roles()
-                .and()
-                .passwordEncoder(getEncoder());  // specifying what encoder we used
-
-         */
     }
 
     // creating a PasswordEncoder that is needed in two places
@@ -45,7 +31,7 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/console/*", "/h2/*", "/api/register", "/actuator/shutdown").permitAll()
+                .mvcMatchers("/console/*", "/h2/*", "/api/register", "/actuator/*", "/swagger/*").permitAll()
                 //.mvcMatchers("/api/register").hasAnyRole("ADMIN", "USER")
                 //.mvcMatchers("/").hasRole("USER")
                 .mvcMatchers("/**").authenticated()
